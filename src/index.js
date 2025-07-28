@@ -5,6 +5,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { SelectionProvider } from './context/SelectionContext';
 import { NetworkProvider } from './context/NetworkContext';
 import { AssetProvider } from './context/AssetContext';
+import { TimelineProvider } from './context/TimelineContext';
 import './theme.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -14,7 +15,9 @@ root.render(
       <SelectionProvider>
         <NetworkProvider>
           <AssetProvider>
-            <App />
+            <TimelineProvider>
+              <App />
+            </TimelineProvider>
           </AssetProvider>
         </NetworkProvider>
       </SelectionProvider>
