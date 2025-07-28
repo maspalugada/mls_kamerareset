@@ -1,0 +1,23 @@
+/* src/theme.css */
+
+:root {
+  --font-color: #eee;
+  --bg-color: #222;
+  --panel-bg-color: #333;
+  --border-color: #444;
+  --accent-color: #0a84ff;
+}
+
+[data-theme='light'] {
+  --font-color: #222;
+  --bg-color: #fff;
+  --panel-bg-color: #f0f0f0;
+  --border-color: #ccc;
+  --accent-color: #007aff;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--font-color);
+  transition: background-color 0.2s, color 0.2s;
+}

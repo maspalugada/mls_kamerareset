@@ -1,7 +1,12 @@
 import React from 'react';
 
 function TopToolbar() {
-  return <div style={{ borderBottom: '1px solid #ccc', padding: '10px' }}>Top Toolbar</div>;
+  const toolbarStyle = {
+    borderBottom: '1px solid var(--border-color)',
+    padding: '10px',
+    backgroundColor: 'var(--panel-bg-color)',
+  };
+  return <div style={toolbarStyle}>Top Toolbar</div>;
 }
 
 export default TopToolbar;
