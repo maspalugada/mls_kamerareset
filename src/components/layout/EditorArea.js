@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import VideoEditor from '../../modules/content-editor/video-editor/VideoEditor';
-import VirtualCamera from '../../modules/virtual-camera/VirtualCamera';
+import ProgramPreview from '../program-preview/ProgramPreview';
+import InputManager from '../../modules/input-manager/InputManager';
 
 function EditorArea() {
   const [activeTab, setActiveTab] = useState('videoEditor');
@@ -33,13 +33,13 @@ function EditorArea() {
         <button style={tabButtonStyle(activeTab === 'videoEditor')} onClick={() => setActiveTab('videoEditor')}>
           Video Editor
         </button>
-        <button style={tabButtonStyle(activeTab === 'virtualCam')} onClick={() => setActiveTab('virtualCam')}>
-          Virtual Camera
+        <button style={tabButtonStyle(activeTab === 'inputManager')} onClick={() => setActiveTab('inputManager')}>
+          Input Manager
         </button>
       </div>
 
-      {activeTab === 'videoEditor' && <VideoEditor />}
-      {activeTab === 'virtualCam' && <VirtualCamera />}
+      {activeTab === 'videoEditor' && <ProgramPreview />}
+      {activeTab === 'inputManager' && <InputManager />}
     </div>
   );
 }
