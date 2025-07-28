@@ -11,10 +11,14 @@ function createWindow() {
     },
   });
 
-  // For development, you might load from a dev server
-  // For production, you would load the built index.html
-  // mainWindow.loadURL('http://localhost:3000'); // Example for dev
-  mainWindow.loadFile('public/index.html'); // Example for production build
+  // In development, load from the webpack dev server
+  // In production, load the built index.html file
+  if (process.env.NODE_ENV === 'development') {
+    mainWindow.loadURL('http://localhost:3000');
+    mainWindow.webContents.openDevTools(); // Open DevTools in dev mode
+  } else {
+    mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
+  }
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
