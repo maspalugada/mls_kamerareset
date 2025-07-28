@@ -7,6 +7,7 @@ import { NetworkProvider } from './context/NetworkContext';
 import { AssetProvider } from './context/AssetContext';
 import { TimelineProvider } from './context/TimelineContext';
 import { InputProvider } from './context/InputContext';
+import { SwitcherProvider } from './context/SwitcherContext';
 import './theme.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -18,7 +19,9 @@ root.render(
           <AssetProvider>
             <TimelineProvider>
               <InputProvider>
-                <App />
+                <SwitcherProvider>
+                  <App />
+                </SwitcherProvider>
               </InputProvider>
             </TimelineProvider>
           </AssetProvider>

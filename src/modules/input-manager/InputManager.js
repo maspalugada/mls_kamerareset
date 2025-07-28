@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { InputContext } from '../../context/InputContext';
+import { AssetContext } from '../../context/AssetContext';
+import { SwitcherContext } from '../../context/SwitcherContext';
 
 function InputManager() {
   const { inputs, addInput } = useContext(InputContext);
+  const { assets } = useContext(AssetContext);
+  const { previewInput, programInput } = useContext(SwitcherContext);
   const [videoDevices, setVideoDevices] = useState([]);
 
   useEffect(() => {
@@ -27,6 +31,17 @@ function InputManager() {
     });
   };
 
+  const handleAddVideoFile = (asset) => {
+    addInput({
+      type: 'videoFile',
+      assetId: asset.id,
+      name: asset.name,
+      url: asset.url,
+    });
+  };
+
+  const videoAssets = assets.filter(asset => asset.type === 'video');
+
   return (
     <div>
       <h4>Input Manager</h4>
@@ -38,11 +53,22 @@ function InputManager() {
           </button>
         ))}
       </div>
+      <div style={{ marginBottom: '20px' }}>
+        <h5>Available Video Assets</h5>
+        {videoAssets.map(asset => (
+          <button key={asset.id} onClick={() => handleAddVideoFile(asset)}>
+            Add {asset.name}
+          </button>
+        ))}
+        {videoAssets.length === 0 && <p>No video assets imported.</p>}
+      </div>
       <div>
         <h5>Active Inputs</h5>
-        <ul>
+        <ul style={{ listStyle: 'none', padding: 0 }}>
           {inputs.map(input => (
-            <li key={input.id}>
+            <li key={input.id} style={{ marginBottom: '5px' }}>
+              {programInput && programInput.id === input.id && <span style={{ color: 'red', marginRight: '5px' }}>● LIVE</span>}
+              {previewInput && previewInput.id === input.id && <span style={{ color: 'yellow', marginRight: '5px' }}>● PREV</span>}
               <strong>{input.name}</strong> ({input.type})
             </li>
           ))}
