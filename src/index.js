@@ -4,6 +4,7 @@ import App from './App';
 import { ThemeProvider } from './context/ThemeContext';
 import { SelectionProvider } from './context/SelectionContext';
 import { NetworkProvider } from './context/NetworkContext';
+import { AssetProvider } from './context/AssetContext';
 import './theme.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -12,7 +13,9 @@ root.render(
     <ThemeProvider>
       <SelectionProvider>
         <NetworkProvider>
-          <App />
+          <AssetProvider>
+            <App />
+          </AssetProvider>
         </NetworkProvider>
       </SelectionProvider>
     </ThemeProvider>
