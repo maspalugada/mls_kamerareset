@@ -4,12 +4,14 @@ import Sidebar from './components/layout/Sidebar';
 import EditorArea from './components/layout/EditorArea';
 import TimelineView from './components/layout/TimelineView';
 import InspectorPanel from './components/inspector-panel/InspectorPanel';
+import SettingsPage from './modules/settings/SettingsPage';
 import { ThemeContext } from './context/ThemeContext';
 import { CommandPalette } from './components/command-palette/CommandPalette';
 
 function App() {
   const { theme } = useContext(ThemeContext);
   const [showCommandPalette, setShowCommandPalette] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme);
@@ -39,22 +41,24 @@ function App() {
 
   const mainContentStyle = {
     display: 'flex',
-    flex: 1,
-    overflow: 'hidden',
+    flexGrow: 1, // Allow this container to grow
+    overflow: 'hidden', // Prevent overflow
   };
 
   const editorColumnStyle = {
-    flex: 1,
+    flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
+    minWidth: 0, // Prevent flex items from overflowing
   };
 
   return (
     <div style={appStyle}>
       <CommandPalette show={showCommandPalette} onClose={() => setShowCommandPalette(false)} />
+      {isSettingsOpen && <SettingsPage onClose={() => setIsSettingsOpen(false)} />}
       <TopToolbar />
       <div style={mainContentStyle}>
-        <Sidebar />
+        <Sidebar onSettingsClick={() => setIsSettingsOpen(true)} />
         <main style={editorColumnStyle}>
           <EditorArea />
           <TimelineView />

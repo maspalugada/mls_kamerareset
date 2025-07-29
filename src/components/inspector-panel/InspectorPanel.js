@@ -8,9 +8,11 @@ function InspectorPanel() {
 
   const panelStyle = {
     width: '300px',
+    flexShrink: 0,
     borderLeft: '1px solid var(--border-color)',
     padding: '10px',
     backgroundColor: 'var(--panel-bg-color)',
+    overflowY: 'auto',
   };
 
   const renderProperties = () => {
