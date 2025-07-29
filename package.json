@@ -9,13 +9,21 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.27.1",
+    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/react": "^16.3.0",
+    "babel-jest": "^30.0.5",
     "electron": "^28.0.0",
-    "electron-builder": "^26.0.12"
+    "electron-builder": "^26.0.12",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^30.0.5",
+    "jest-environment-jsdom": "^30.0.5"
   },
   "scripts": {
     "start": "electron .",
     "build": "webpack --mode production",
-    "package": "npm run build && electron-builder"
+    "package": "npm run build && electron-builder",
+    "test": "jest"
   },
   "build": {
     "appId": "com.example.multimediastudio",

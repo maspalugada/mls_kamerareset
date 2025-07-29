@@ -2,12 +2,16 @@ import React, { useState, useEffect, useContext } from 'react';
 import { InputContext } from '../../context/InputContext';
 import { AssetContext } from '../../context/AssetContext';
 import { SwitcherContext } from '../../context/SwitcherContext';
+import TextEditorModal from '../../components/text-editor/TextEditorModal';
+import SourceSelectorModal from '../../components/source-selector/SourceSelectorModal';
 
 function InputManager() {
   const { inputs, addInput } = useContext(InputContext);
   const { assets } = useContext(AssetContext);
   const { previewInput, programInput } = useContext(SwitcherContext);
   const [videoDevices, setVideoDevices] = useState([]);
+  const [isTextModalOpen, setIsTextModalOpen] = useState(false);
+  const [isSourceModalOpen, setIsSourceModalOpen] = useState(false);
 
   useEffect(() => {
     async function getDevices() {
@@ -40,12 +44,35 @@ function InputManager() {
     });
   };
 
+  const handleSaveText = (textData) => {
+    addInput({
+      type: 'text',
+      name: `Text: ${textData.line1}`,
+      data: textData,
+    });
+  };
+
+  const handleSourceSelect = (source) => {
+    addInput({
+      type: 'screen',
+      sourceId: source.id,
+      name: source.name,
+    });
+    setIsSourceModalOpen(false);
+  };
+
   const videoAssets = assets.filter(asset => asset.type === 'video');
 
   return (
     <div>
+      {isTextModalOpen && <TextEditorModal onClose={() => setIsTextModalOpen(false)} onSave={handleSaveText} />}
+      {isSourceModalOpen && <SourceSelectorModal onClose={() => setIsSourceModalOpen(false)} onSelect={handleSourceSelect} />}
       <h4>Input Manager</h4>
       <div style={{ marginBottom: '20px' }}>
+        <h5>Add New Input</h5>
+        <button onClick={() => setIsTextModalOpen(true)}>Add Text</button>
+        <button onClick={() => setIsSourceModalOpen(true)}>Add Screen/Window</button>
+        <hr/>
         <h5>Available Cameras</h5>
         {videoDevices.map(device => (
           <button key={device.deviceId} onClick={() => handleAddCamera(device)}>

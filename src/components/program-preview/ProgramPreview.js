@@ -30,6 +30,36 @@ function ProgramPreview() {
       await videoEl.play();
       return videoEl.captureStream();
     }
+    if (input.type === 'text') {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1920;
+        canvas.height = 1080;
+        const ctx = canvas.getContext('2d');
+
+        // Simple lower third style
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        ctx.fillRect(0, 900, 1920, 180);
+
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 72px Arial';
+        ctx.fillText(input.data.line1, 50, 980);
+
+        ctx.font = '48px Arial';
+        ctx.fillText(input.data.line2, 50, 1050);
+
+        return canvas.captureStream();
+    }
+    if (input.type === 'screen') {
+        return navigator.mediaDevices.getUserMedia({
+          audio: false,
+          video: {
+            mandatory: {
+              chromeMediaSource: 'desktop',
+              chromeMediaSourceId: input.sourceId,
+            },
+          },
+        });
+    }
     return null;
   };
 

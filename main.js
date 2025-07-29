@@ -1,24 +1,29 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain, desktopCapturer } = require('electron');
 const path = require('path');
+
+ipcMain.handle('get-screen-sources', async () => {
+  return await desktopCapturer.getSources({ types: ['window', 'screen'] });
+});
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
     width: 1280,
     height: 720,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'), // assuming we will have a preload script
+      preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
     },
   });
 
-  // For development, you might load from a dev server
-  // For production, you would load the built index.html
-  // mainWindow.loadURL('http://localhost:3000'); // Example for dev
-  mainWindow.loadFile('public/index.html'); // Example for production build
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  // In development, load from the webpack dev server
+  // In production, load the built index.html file
+  if (process.env.NODE_ENV === 'development') {
+    mainWindow.loadURL('http://localhost:3000');
+    mainWindow.webContents.openDevTools(); // Open DevTools in dev mode
+  } else {
+    mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
+  }
 }
 
 app.whenReady().then(() => {
