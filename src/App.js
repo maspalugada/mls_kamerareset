@@ -39,14 +39,15 @@ function App() {
 
   const mainContentStyle = {
     display: 'flex',
-    flex: 1,
-    overflow: 'hidden',
+    flexGrow: 1, // Allow this container to grow
+    overflow: 'hidden', // Prevent overflow
   };
 
   const editorColumnStyle = {
-    flex: 1,
+    flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
+    minWidth: 0, // Prevent flex items from overflowing
   };
 
   return (

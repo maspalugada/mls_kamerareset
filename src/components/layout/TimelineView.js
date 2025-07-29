@@ -24,6 +24,7 @@ function TimelineView() {
   };
 
   const timelineStyle = {
+    flexShrink: 0, // Prevent timeline from shrinking
     height: '250px',
     borderTop: '1px solid var(--border-color)',
     padding: '10px',

@@ -6,11 +6,12 @@ function EditorArea() {
   const [activeTab, setActiveTab] = useState('videoEditor');
 
   const editorAreaStyle = {
-    flex: 1,
+    flexGrow: 1,
     padding: '10px',
     backgroundColor: 'var(--bg-color)',
     display: 'flex',
     flexDirection: 'column',
+    minHeight: 0, // Prevent flex items from overflowing
   };
 
   const tabContainerStyle = {
