@@ -10,6 +10,7 @@ function InputManager() {
   const { assets } = useContext(AssetContext);
   const { previewInput, programInput } = useContext(SwitcherContext);
   const [videoDevices, setVideoDevices] = useState([]);
+  const [audioDevices, setAudioDevices] = useState([]);
   const [isTextModalOpen, setIsTextModalOpen] = useState(false);
   const [isSourceModalOpen, setIsSourceModalOpen] = useState(false);
 
@@ -19,7 +20,9 @@ function InputManager() {
         await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         const devices = await navigator.mediaDevices.enumerateDevices();
         const videoInputs = devices.filter(device => device.kind === 'videoinput');
+        const audioInputs = devices.filter(device => device.kind === 'audioinput');
         setVideoDevices(videoInputs);
+        setAudioDevices(audioInputs);
       } catch (err) {
         console.error("Error accessing media devices.", err);
       }
@@ -61,6 +64,14 @@ function InputManager() {
     setIsSourceModalOpen(false);
   };
 
+  const handleAddAudio = (device) => {
+    addInput({
+      type: 'audio',
+      deviceId: device.deviceId,
+      name: device.label || `Audio Input ${inputs.length + 1}`,
+    });
+  };
+
   const videoAssets = assets.filter(asset => asset.type === 'video');
 
   return (
@@ -88,6 +99,14 @@ function InputManager() {
           </button>
         ))}
         {videoAssets.length === 0 && <p>No video assets imported.</p>}
+      </div>
+      <div style={{ marginBottom: '20px' }}>
+        <h5>Available Audio Inputs</h5>
+        {audioDevices.map(device => (
+          <button key={device.deviceId} onClick={() => handleAddAudio(device)}>
+            Add {device.label || `Audio Input ${audioDevices.indexOf(device) + 1}`}
+          </button>
+        ))}
       </div>
       <div>
         <h5>Active Inputs</h5>

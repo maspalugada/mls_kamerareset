@@ -5,17 +5,17 @@ import EditorArea from './components/layout/EditorArea';
 import TimelineView from './components/layout/TimelineView';
 import InspectorPanel from './components/inspector-panel/InspectorPanel';
 import SettingsPage from './modules/settings/SettingsPage';
-import { ThemeContext } from './context/ThemeContext';
+import { useSettings } from './hooks/useSettings';
 import { CommandPalette } from './components/command-palette/CommandPalette';
 
 function App() {
-  const { theme } = useContext(ThemeContext);
+  const { settings } = useSettings();
   const [showCommandPalette, setShowCommandPalette] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   useEffect(() => {
-    document.body.setAttribute('data-theme', theme);
-  }, [theme]);
+    document.body.setAttribute('data-theme', settings.theme);
+  }, [settings.theme]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
