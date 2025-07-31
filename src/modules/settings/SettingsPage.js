@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { ThemeContext } from '../../context/ThemeContext';
+import React from 'react';
+import { useSettings } from '../../hooks/useSettings';
 
 function SettingsPage({ onClose }) {
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const { settings, toggleTheme, set } = useSettings();
 
   const modalStyle = {
     position: 'fixed',
@@ -39,7 +39,7 @@ function SettingsPage({ onClose }) {
 
         <div style={{ marginBottom: '15px' }}>
           <h4>Theme</h4>
-          <span>Current theme: {theme}</span>
+          <span>Current theme: {settings.theme}</span>
           <button onClick={toggleTheme} style={{ marginLeft: '10px' }}>Toggle Theme</button>
         </div>
 
@@ -49,7 +49,12 @@ function SettingsPage({ onClose }) {
           <h4>Project Settings</h4>
           <label style={{ display: 'block', marginBottom: '5px' }}>
             Autosave Interval (seconds):
-            <input type="number" defaultValue="300" style={{ marginLeft: '10px' }} />
+            <input
+              type="number"
+              value={settings.autosaveInterval}
+              onChange={(e) => set('autosaveInterval', parseInt(e.target.value, 10))}
+              style={{ marginLeft: '10px' }}
+            />
           </label>
         </div>
 
@@ -57,9 +62,42 @@ function SettingsPage({ onClose }) {
           <h4>Playback</h4>
           <label style={{ display: 'block', marginBottom: '5px' }}>
             Default Transition:
-            <select defaultValue="cut" style={{ marginLeft: '10px' }}>
+            <select
+              value={settings.defaultTransition}
+              onChange={(e) => set('defaultTransition', e.target.value)}
+              style={{ marginLeft: '10px' }}
+            >
               <option value="cut">Cut</option>
               <option value="fade">Fade</option>
+            </select>
+          </label>
+        </div>
+
+        <hr style={{ borderColor: 'var(--border-color)', margin: '20px 0' }} />
+
+        <div style={{ marginBottom: '15px' }}>
+          <h4>Video Output</h4>
+          <label style={{ display: 'block', marginBottom: '5px' }}>
+            Resolution:
+            <select
+              value={settings.outputResolution}
+              onChange={(e) => set('outputResolution', e.target.value)}
+              style={{ marginLeft: '10px' }}
+            >
+              <option value="1920x1080">1920x1080 (1080p)</option>
+              <option value="1280x720">1280x720 (720p)</option>
+              <option value="854x480">854x480 (480p)</option>
+            </select>
+          </label>
+          <label style={{ display: 'block', marginTop: '10px' }}>
+            Frame Rate (FPS):
+            <select
+              value={settings.outputFps}
+              onChange={(e) => set('outputFps', parseInt(e.target.value, 10))}
+              style={{ marginLeft: '10px' }}
+            >
+              <option value={30}>30</option>
+              <option value={60}>60</option>
             </select>
           </label>
         </div>

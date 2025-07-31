@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ProgramPreview from '../program-preview/ProgramPreview';
 import InputManager from '../../modules/input-manager/InputManager';
+import AudioMixer from '../audio-mixer/AudioMixer';
 
 function EditorArea() {
   const [activeTab, setActiveTab] = useState('videoEditor');
@@ -11,7 +12,7 @@ function EditorArea() {
     backgroundColor: 'var(--bg-color)',
     display: 'flex',
     flexDirection: 'column',
-    minHeight: 0, // Prevent flex items from overflowing
+    minHeight: 0,
   };
 
   const tabContainerStyle = {
@@ -37,10 +38,14 @@ function EditorArea() {
         <button style={tabButtonStyle(activeTab === 'inputManager')} onClick={() => setActiveTab('inputManager')}>
           Input Manager
         </button>
+        <button style={tabButtonStyle(activeTab === 'audioMixer')} onClick={() => setActiveTab('audioMixer')}>
+          Audio Mixer
+        </button>
       </div>
 
       {activeTab === 'videoEditor' && <ProgramPreview />}
       {activeTab === 'inputManager' && <InputManager />}
+      {activeTab === 'audioMixer' && <AudioMixer />}
     </div>
   );
 }

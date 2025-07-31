@@ -14,7 +14,19 @@ export function InputProvider({ children }) {
     setInputs(prevInputs => [...prevInputs, newInput]);
   };
 
-  const value = useMemo(() => ({ inputs, addInput }), [inputs]);
+  const addAudioInputFromVideo = (videoInput) => {
+    const audioInput = {
+      id: uuidv4(),
+      type: 'audio',
+      name: `${videoInput.name} (Audio)`,
+      // We link it to the video input to know its origin
+      parentInputId: videoInput.id,
+      url: videoInput.url, // The audio will come from the same file url
+    };
+    setInputs(prevInputs => [...prevInputs, audioInput]);
+  };
+
+  const value = useMemo(() => ({ inputs, addInput, addAudioInputFromVideo }), [inputs]);
 
   return (
     <InputContext.Provider value={value}>

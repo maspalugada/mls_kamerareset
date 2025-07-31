@@ -81,19 +81,50 @@ Ini akan memulai aplikasi Electron dan membuka jendela utama.
 
 ```
 /
+├── bin/                  # Untuk binary eksternal (ffmpeg, dll.)
+│   ├── ffmpeg/
+│   ├── virtual-audio/
+│   └── virtual-camera/
 ├── public/
-│   └── index.html      # Template HTML utama
+│   └── index.html
 ├── src/
-│   ├── assets/         # Aset statis (ikon, font, dll.)
-│   ├── components/     # Komponen React yang dapat digunakan kembali (UI)
-│   ├── context/        # React Context untuk manajemen state global
-│   ├── core-engine/    # (Direncanakan) Logika inti untuk pemrosesan media
-│   ├── modules/        # Komponen fungsional utama (fitur aplikasi)
-│   ├── App.js          # Komponen root aplikasi
-│   ├── index.js        # Titik masuk untuk proses renderer React
-│   └── theme.css       # Variabel CSS untuk tema
-├── .gitignore          # File dan folder yang diabaikan oleh Git
-├── main.js             # Titik masuk untuk proses utama Electron
-├── package.json        # Dependensi dan skrip proyek
-└── README.md           # Dokumentasi ini
+│   ├── assets/
+│   ├── components/       # Komponen UI Generik
+│   │   ├── audio-mixer/
+│   │   ├── command-palette/
+│   │   ├── inspector-panel/
+│   │   ├── layout/
+│   │   ├── network-status/
+│   │   ├── program-preview/
+│   │   ├── recording/
+│   │   ├── source-selector/
+│   │   └── text-editor/
+│   ├── context/          # State management global
+│   │   ├── AssetContext.js
+│   │   ├── InputContext.js
+│   │   ├── NetworkContext.js
+│   │   ├── SelectionContext.js
+│   │   ├── SwitcherContext.js
+│   │   └── TimelineContext.js
+│   ├── core-engine/      # (Direncanakan) Logika inti pemrosesan media
+│   ├── hooks/            # Custom React Hooks
+│   │   └── useSettings.js
+│   ├── modules/          # Komponen fungsional utama (fitur)
+│   │   ├── asset-library/
+│   │   ├── input-manager/
+│   │   └── settings/
+│   ├── services/         # Logika bisnis terpisah (OOP Model)
+│   │   ├── RecordingService.js
+│   │   └── SettingsService.js
+│   ├── App.js            # Komponen root aplikasi
+│   ├── index.js          # Titik masuk untuk proses renderer React
+│   └── theme.css         # Variabel CSS untuk tema
+├── .babelrc              # Konfigurasi Babel
+├── .gitignore
+├── jest.config.js        # Konfigurasi Jest
+├── jest.setup.js         # Setup untuk tes Jest
+├── main.js               # Titik masuk untuk proses utama Electron
+├── package.json
+├── preload.js            # Skrip jembatan antara proses utama dan renderer
+└── webpack.config.js     # Konfigurasi Webpack
 ```
