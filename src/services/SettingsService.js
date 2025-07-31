@@ -1,36 +1,65 @@
+const SETTINGS_STORAGE_KEY = 'multimedia-studio-settings';
+
 class SettingsService {
   constructor() {
-    // Default settings
-    this.settings = {
+    this.listeners = [];
+    this.settings = this._loadSettings();
+  }
+
+  _loadSettings() {
+    const defaults = {
       theme: 'dark',
       autosaveInterval: 300,
       defaultTransition: 'fade',
+      outputResolution: '1920x1080',
+      outputFps: 30,
     };
-    this.listeners = [];
+
+    try {
+      const storedSettings = localStorage.getItem(SETTINGS_STORAGE_KEY);
+      if (storedSettings) {
+        return { ...defaults, ...JSON.parse(storedSettings) };
+      }
+    } catch (error) {
+      console.error('Error loading settings from localStorage:', error);
+    }
+    return defaults;
   }
 
-  // Method to get a setting
+  _saveSettings() {
+    try {
+      localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(this.settings));
+    } catch (error) {
+      console.error('Error saving settings to localStorage:', error);
+    }
+  }
+
   get(key) {
     return this.settings[key];
   }
 
-  // Method to set a setting
   set(key, value) {
+    // Basic validation
+    if (key === 'autosaveInterval' && (isNaN(value) || value < 0)) {
+      return; // Ignore invalid value
+    }
+    if (key === 'outputFps' && ![30, 60].includes(value)) {
+      return; // Ignore invalid value
+    }
+
     this.settings[key] = value;
+    this._saveSettings();
     this.notifyListeners();
   }
 
-  // Method to toggle the theme
   toggleTheme() {
     const newTheme = this.settings.theme === 'dark' ? 'light' : 'dark';
     this.set('theme', newTheme);
   }
 
-  // Simple event system to notify React components of changes
   subscribe(listener) {
     this.listeners.push(listener);
     return () => {
-      // Unsubscribe function
       this.listeners = this.listeners.filter(l => l !== listener);
     };
   }
@@ -40,6 +69,5 @@ class SettingsService {
   }
 }
 
-// Export a single instance (singleton pattern)
 const settingsService = new SettingsService();
 export default settingsService;

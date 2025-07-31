@@ -73,6 +73,35 @@ function SettingsPage({ onClose }) {
           </label>
         </div>
 
+        <hr style={{ borderColor: 'var(--border-color)', margin: '20px 0' }} />
+
+        <div style={{ marginBottom: '15px' }}>
+          <h4>Video Output</h4>
+          <label style={{ display: 'block', marginBottom: '5px' }}>
+            Resolution:
+            <select
+              value={settings.outputResolution}
+              onChange={(e) => set('outputResolution', e.target.value)}
+              style={{ marginLeft: '10px' }}
+            >
+              <option value="1920x1080">1920x1080 (1080p)</option>
+              <option value="1280x720">1280x720 (720p)</option>
+              <option value="854x480">854x480 (480p)</option>
+            </select>
+          </label>
+          <label style={{ display: 'block', marginTop: '10px' }}>
+            Frame Rate (FPS):
+            <select
+              value={settings.outputFps}
+              onChange={(e) => set('outputFps', parseInt(e.target.value, 10))}
+              style={{ marginLeft: '10px' }}
+            >
+              <option value={30}>30</option>
+              <option value={60}>60</option>
+            </select>
+          </label>
+        </div>
+
       </div>
     </>
   );
