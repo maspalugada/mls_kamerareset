@@ -38,12 +38,23 @@ function InputManager() {
     });
   };
 
+  const { inputs, addInput, addAudioInputFromVideo } = useContext(InputContext);
   const handleAddVideoFile = (asset) => {
-    addInput({
+    const newVideoInput = {
       type: 'videoFile',
       assetId: asset.id,
       name: asset.name,
       url: asset.url,
+    };
+    addInput(newVideoInput);
+
+    // Check if the video asset has an audio track and add it automatically
+    const videoElement = document.createElement('video');
+    videoElement.src = asset.url;
+    videoElement.addEventListener('loadedmetadata', () => {
+      if (videoElement.mozHasAudio || videoElement.webkitAudioDecodedByteCount > 0 || videoElement.audioTracks?.length > 0) {
+        addAudioInputFromVideo(newVideoInput);
+      }
     });
   };
 
