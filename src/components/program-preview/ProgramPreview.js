@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useContext } from 'react';
+import Split from 'split.js';
 import { InputContext } from '../../context/InputContext';
 import { SwitcherContext } from '../../context/SwitcherContext';
 import RecordingButton from '../recording/RecordingButton';
@@ -12,6 +13,7 @@ function ProgramPreview() {
     setProgramInput
   } = useContext(SwitcherContext);
 
+  const splitRef = useRef(null);
   const previewVideoRef = useRef(null);
   const programVideoRef = useRef(null);
   const programCanvasRef = useRef(null);
@@ -142,26 +144,48 @@ function ProgramPreview() {
   }, [programInput]);
 
 
-  const containerStyle = { display: 'flex', gap: '10px', padding: '10px' };
-  const videoContainerStyle = { flex: 1, border: '2px solid #555', padding: '5px' };
+  useEffect(() => {
+    splitRef.current = Split(['#preview-panel', '#program-panel'], {
+      sizes: [50, 50],
+      minSize: 200,
+      gutterSize: 10,
+      cursor: 'col-resize',
+    });
+
+    return () => {
+      if (splitRef.current) {
+        splitRef.current.destroy();
+      }
+    };
+  }, []);
+
+  const containerStyle = { display: 'flex', height: 'calc(100% - 100px)' }; // Adjust height to leave space for controls
+  const videoContainerStyle = { padding: '5px', overflow: 'hidden' };
+
+  const handleResetLayout = () => {
+    if (splitRef.current) {
+      splitRef.current.setSizes([50, 50]);
+    }
+  };
 
   return (
-    <div>
-      <div style={containerStyle}>
-        <div style={videoContainerStyle}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div id="studio-mode-container" style={containerStyle}>
+        <div id="preview-panel" style={videoContainerStyle}>
           <h4>Preview</h4>
-          <video ref={previewVideoRef} autoPlay playsInline muted style={{ width: '100%' }} />
+          <video ref={previewVideoRef} autoPlay playsInline muted style={{ width: '100%', height: 'auto' }} />
         </div>
-        <div style={videoContainerStyle}>
+        <div id="program-panel" style={videoContainerStyle}>
           <h4>Program</h4>
-          <canvas ref={programCanvasRef} style={{ width: '100%', backgroundColor: 'black' }} />
+          <canvas ref={programCanvasRef} style={{ width: '100%', height: 'auto', backgroundColor: 'black' }} />
           <video ref={programVideoRef} autoPlay playsInline muted style={{ display: 'none' }} />
         </div>
       </div>
-      <div style={{ padding: '10px', display: 'flex', gap: '10px' }}>
+      <div style={{ padding: '10px', display: 'flex', gap: '10px', flexShrink: 0 }}>
         <button onClick={handleCut}>Cut</button>
         <button onClick={handleFade}>Fade</button>
         <RecordingButton programCanvasRef={programCanvasRef} />
+        <button onClick={handleResetLayout} title="Reset Layout">⟳</button>
       </div>
       <div>
         <h5>Select Input for Preview:</h5>
