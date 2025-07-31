@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useContext } from 'react';
 import { InputContext } from '../../context/InputContext';
 import { SwitcherContext } from '../../context/SwitcherContext';
+import RecordingButton from '../recording/RecordingButton';
 
 function ProgramPreview() {
   const { inputs } = useContext(InputContext);
@@ -157,9 +158,10 @@ function ProgramPreview() {
           <video ref={programVideoRef} autoPlay playsInline muted style={{ display: 'none' }} />
         </div>
       </div>
-      <div style={{ padding: '10px' }}>
+      <div style={{ padding: '10px', display: 'flex', gap: '10px' }}>
         <button onClick={handleCut}>Cut</button>
         <button onClick={handleFade}>Fade</button>
+        <RecordingButton programCanvasRef={programCanvasRef} />
       </div>
       <div>
         <h5>Select Input for Preview:</h5>
